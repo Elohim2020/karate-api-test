@@ -18,16 +18,18 @@ Este repositorio contiene un conjunto de pruebas automatizadas de API utilizando
 ---
 
 ## 📁 Estructura del proyecto
+```text
 karate-api-tests/
 ├── src/test/java/examples/
-│ ├── primerTest.feature # Escenarios de prueba principales
-│ ├── users/users.feature # (Opcional) Casos separados por módulo
-│ ├── data/nuevo-post.json # JSON externo reutilizable
-│ └── ExamplesTest.java # Runner para ejecución con JUnit5
-├── karate-config.js # Configuración global (por entorno)
-├── logback-test.xml # Configuración de logs
-├── pom.xml # Configuración de Maven
-└── README.md # Este archivo
+│   ├── primerTest.feature         # Escenarios de prueba principales
+│   ├── users/users.feature        # (Opcional) Casos separados por módulo
+│   ├── data/nuevo-post.json       # JSON externo reutilizable
+│   └── ExamplesTest.java          # Runner para ejecución con JUnit5
+├── karate-config.js               # Configuración global (por entorno)
+├── logback-test.xml               # Configuración de logs
+├── pom.xml                        # Configuración de Maven
+└── README.md                      # Este archivo
+```
 
 
 ---
