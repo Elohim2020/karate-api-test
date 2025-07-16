@@ -22,6 +22,8 @@ Este repositorio contiene un conjunto de pruebas automatizadas de API utilizando
 karate-api-tests/
 ├── src/test/java/examples/
 │   ├── primerTest.feature         # Escenarios de prueba principales
+    ├── segundoTest.feature        # Escenarios de prueba principales
+    ├── tercertTest.feature        # Escenarios de prueba principales
 │   ├── users/users.feature        # (Opcional) Casos separados por módulo
 │   ├── data/nuevo-post.json       # JSON externo reutilizable
 │   └── ExamplesTest.java          # Runner para ejecución con JUnit5
@@ -46,6 +48,10 @@ karate-api-tests/
 - Uso de `Background` para eliminar repetición de código
 - Uso de `Scenario Outline` para pruebas con múltiples datos
 - Validaciones con `match`, `match contains`, `match each`
+- `match contains any` → Permite que al menos uno de varios valores exista.
+- `match contains only` → Verifica que solo existan los valores definidos.
+- `match each` → Aplica una validación a cada objeto de un array.
+- `match each contains` → Valida que cada objeto tenga al menos los campos definidos, ignorando el resto.
 - Generación de reportes HTML post-ejecución
 
 
