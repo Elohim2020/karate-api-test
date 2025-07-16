@@ -48,7 +48,33 @@ karate-api-tests/
 - Validaciones con `match`, `match contains`, `match each`
 - Generación de reportes HTML post-ejecución
 
----
+
+#### 🧪 Validaciones flexibles con `match contains`
+Karate permite validar parcialmente objetos complejos ignorando campos extra.  
+Por ejemplo:
+
+```karate
+* def expectedUser =
+"""
+{
+id: '#number',
+name: '#string',
+username: '#string',
+email: '#string',
+address: {
+street: '#string',
+city: '#string'
+}
+}
+"""
+Given url 'https://jsonplaceholder.typicode.com/users'
+When method get
+Then status 200
+And match each response contains expectedUser
+```
+
+📌 Esto valida que cada usuario tenga al menos los campos definidos, ignorando el resto (como zipcode, company, etc).
+
 
 ## ▶️ Cómo ejecutar las pruebas
 
