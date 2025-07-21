@@ -55,7 +55,7 @@ karate-api-tests/
 - Generación de reportes HTML post-ejecución
 
 
-#### 🧪 Validaciones flexibles con `match contains`
+### 🧪 Validaciones flexibles con `match contains`
 Karate permite validar parcialmente objetos complejos ignorando campos extra.  
 Por ejemplo:
 
@@ -78,8 +78,26 @@ When method get
 Then status 200
 And match each response contains expectedUser
 ```
-
 📌 Esto valida que cada usuario tenga al menos los campos definidos, ignorando el resto (como zipcode, company, etc).
+
+### 🚫 Escenario negativo por estructura incorrecta
+```karate
+
+Scenario: Error al validar un solo objeto contra una lista
+Given url 'https://jsonplaceholder.typicode.com/posts'
+When method get
+Then status 200
+And match response == { id: '#number' }
+```
+⚠️ Este test falla porque el endpoint /posts retorna un arreglo (lista de objetos), no un solo objeto.
+El error ayuda a entender la diferencia entre:
+
+match response == { ... } (espera un objeto),
+
+match each response contains { ... } (espera una lista de objetos).
+
+![Evidencia de fallo](./screenshots/errorObjetoVsLista.png)
+
 
 
 ## ▶️ Cómo ejecutar las pruebas
