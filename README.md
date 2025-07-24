@@ -80,6 +80,7 @@ And match each response contains expectedUser
 ```
 📌 Esto valida que cada usuario tenga al menos los campos definidos, ignorando el resto (como zipcode, company, etc).
 
+---
 ### 🚫 Escenario negativo por estructura incorrecta
 ```karate
 
@@ -98,12 +99,12 @@ El error ayuda a entender la diferencia entre:
 
 ![Evidencia de fallo](./screenshots/errorObjetoVsLista.png)
 
+---
 ### 🚫 Validaciones negativas (Errores 401 y 422)
 Karate permite validar respuestas de error con facilidad, útil para escenarios donde los datos no son válidos o las crededenciales son incorrectas.
 
 ### Escenario de datos incorrectos (422)
 ```karate
-
 * def body =
 """
 {
@@ -146,6 +147,7 @@ And match response[0].message contains "can't be blank"
 #### Evidencia de resultados
 ![Evidencia de fallo](./screenshots/tokenInvalido.png)
 
+---
 ## ▶️ Cómo ejecutar las pruebas
 
 Asegúrate de tener Maven instalado. Luego ejecuta:
@@ -164,6 +166,7 @@ Después de ejecutar `mvn test`, se genera un reporte HTML:
 
 ![Reporte de ejecución](./screenshots/reporteEjecucion.png)
 
+---
 ## 🤝 Cómo contribuir
 
 1. Haz un fork del proyecto
