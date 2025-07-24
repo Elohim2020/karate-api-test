@@ -92,13 +92,59 @@ And match response == { id: '#number' }
 ⚠️ Este test falla porque el endpoint /posts retorna un arreglo (lista de objetos), no un solo objeto.
 El error ayuda a entender la diferencia entre:
 
-match response == { ... } (espera un objeto),
+- match response == { ... } (espera un objeto),
 
-match each response contains { ... } (espera una lista de objetos).
+- match each response contains { ... } (espera una lista de objetos).
 
 ![Evidencia de fallo](./screenshots/errorObjetoVsLista.png)
 
+### 🚫 Validaciones negativas (Errores 401 y 422)
+Karate permite validar respuestas de error con facilidad, útil para escenarios donde los datos no son válidos o las crededenciales son incorrectas.
 
+### Escenario de datos incorrectos (422)
+```karate
+
+* def body =
+"""
+{
+name: 'Elohim QA',
+gender: 'male',
+status: 'active',
+email: 'qainvalido@gmail.com'
+}
+"""
+Given url "https://gorest.co.in/public/v2/users"
+And header Authorization = token
+And header Content-Type = 'application/json'
+And request body
+When method post
+Then status 422
+And match response[0].field == 'email'
+And match response[0].message contains "can't be blank"
+```
+### Escenario de token invalido (401)
+```karate
+* def token = 'Bearer TOKEN_INVALIDO'
+* def body =
+  """
+  {
+  name: 'Elohim QA',
+  gender: 'male',
+  status: 'active',
+  email: 'qainvalido@gmail.com'
+  }
+  """
+  Given url 'https://gorest.co.in/public/v2/users'
+  And header Authorization = token
+  And header Authorization = token
+  And header Content-Type = 'application/json'
+  And request body
+  When method post
+  Then status 401
+  And match response.message contains 'Invalid token'
+```
+#### Evidencia de resultados
+![Evidencia de fallo](./screenshots/tokenInvalido.png)
 
 ## ▶️ Cómo ejecutar las pruebas
 
