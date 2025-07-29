@@ -54,7 +54,6 @@ karate-api-tests/
 - `match each contains` → Valida que cada objeto tenga al menos los campos definidos, ignorando el resto.
 - Generación de reportes HTML post-ejecución
 
-
 ### 🧪 Validaciones flexibles con `match contains`
 Karate permite validar parcialmente objetos complejos ignorando campos extra.  
 Por ejemplo:
@@ -81,9 +80,46 @@ And match each response contains expectedUser
 📌 Esto valida que cada usuario tenga al menos los campos definidos, ignorando el resto (como zipcode, company, etc).
 
 ---
+### 📚 Paginación dinámica con `karate.call()`
+Implementamos un escenario que recorre múltiples páginas del endpoint `https://gorest.co.in/public/v2/users?page=`, utilizando la función `karate.call()` para reutilizar lógica desde otro archivo .feature.
+
+- Esto permite dividir responsabilidades:
+
+- Un archivo principal que itera las páginas
+
+- Un archivo auxiliar `(getUserByPage.feature)` que encapsula el request y retorna la respuesta
+```karate
+# Recorre páginas 1 y 2 usando una función definida
+* def pages = [1, 2]
+* def allUsers = []
+* def recorrerPaginas =
+"""
+function(page) {
+var result = karate.call('classpath:src/test/java/examples/users/getUserByPage.feature', { page: page });
+allUsers.push(result.response);
+}
+"""
+* karate.forEach(pages, recorrerPaginas)
+* print 'Usuarios encontrados:', allUsers
+```
+📌 Este enfoque modular mejora la legibilidad y escalabilidad del proyecto.
+
+#### 🔁 Archivo auxiliar: `getUserByPage.feature`
+```karate
+Feature: Obtener usuarios por página
+
+  Scenario: Obtener usuarios por página
+    * def page = __arg.page
+    Given url 'https://gorest.co.in/public/v2/users?page=' + page
+    When method get
+    Then status 200
+```
+#### Evidencia del test
+![Evidencia de test](./screenshots/iterarPaginas.png)
+
+---
 ### 🚫 Escenario negativo por estructura incorrecta
 ```karate
-
 Scenario: Error al validar un solo objeto contra una lista
 Given url 'https://jsonplaceholder.typicode.com/posts'
 When method get
@@ -93,9 +129,9 @@ And match response == { id: '#number' }
 ⚠️ Este test falla porque el endpoint /posts retorna un arreglo (lista de objetos), no un solo objeto.
 El error ayuda a entender la diferencia entre:
 
-- match response == { ... } (espera un objeto),
+- `match response` == { ... } (espera un objeto),
 
-- match each response contains { ... } (espera una lista de objetos).
+- `match each response contains` { ... } (espera una lista de objetos).
 
 ![Evidencia de fallo](./screenshots/errorObjetoVsLista.png)
 
